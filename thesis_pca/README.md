@@ -32,10 +32,9 @@ python main.py
 ## 실험 결과
 
 ### 실행 환경
-- 서버: 32코어 CPU (공용 서버, 부하가 낮을 때 실행)
-- CPU 모델: (확인 후 기입)
+- CPU: AMD EPYC 7282 16-Core Processor (16코어 32스레드, 공용 서버, 부하가 낮을 때 실행)
 - BLAS 스레드: 8 (`OMP_NUM_THREADS=8 OPENBLAS_NUM_THREADS=8 MKL_NUM_THREADS=8`)
-- Python 3.11, 라이브러리 버전: (확인 후 기입)
+- Python 3.11.18, scikit-learn 1.9.1, numpy 2.4.6, pandas 3.1.0, matplotlib 3.11.2
 
 ### 누적 설명분산 임계 k (`results/thresholds.csv`)
 | 임계값 | 80% | 90% | 95% | 99% |
