@@ -78,18 +78,37 @@ def plot_accuracy_vs_k(res_df, thr_df):
 
 
 def plot_variance_vs_accuracy(res_df):
-    """fig4: 누적 설명분산 R_k와 test 정확도의 관계 (각 점에 k 주석)."""
+    """fig4: 누적 설명분산 R_k와 test 정확도의 관계 (각 점에 k 주석).
+
+    R_k가 높은 구간에 점이 몰리므로 왼쪽은 전체, 오른쪽은 R_k >= zoom_from 확대 패널로 그린다.
+    """
+    zoom_from = 0.75
     df = res_df.sort_values("k")
-    fig, ax = plt.subplots(figsize=(7, 4.5))
-    ax.plot(df["cum_var"], df["test_acc"], "-", color="#bbbbbb", lw=1, zorder=1)
-    ax.scatter(df["cum_var"], df["test_acc"], color="#4c72b0", zorder=2)
-    for k, x, y in df[["k", "cum_var", "test_acc"]].itertuples(index=False):
-        label = f"k={int(k)}" + (" (raw)" if k == config.N_FEATURES else "")
-        ax.annotate(label, (x, y), textcoords="offset points", xytext=(5, -10), fontsize=8)
-    ax.set_xlabel("Cumulative explained variance ratio $R_k$")
-    ax.set_ylabel("Test accuracy")
-    ax.set_title("Explained variance vs. test accuracy")
-    ax.grid(alpha=0.3)
+    fig, (ax_full, ax_zoom) = plt.subplots(1, 2, figsize=(12, 4.8),
+                                           gridspec_kw={"width_ratios": [1, 1.2]})
+
+    def draw(ax, data, alternate):
+        ax.plot(df["cum_var"], df["test_acc"], "-", color="#bbbbbb", lw=1, zorder=1)
+        ax.scatter(df["cum_var"], df["test_acc"], color="#4c72b0", zorder=2)
+        for i, (k, x, y) in enumerate(data[["k", "cum_var", "test_acc"]].itertuples(index=False)):
+            label = f"k={int(k)}" + (" (raw)" if k == config.N_FEATURES else "")
+            offset = (0, 10 if i % 2 else -16) if alternate else (6, -12)
+            ax.annotate(label, (x, y), textcoords="offset points", xytext=offset, fontsize=8,
+                        ha="center" if alternate else "left")
+        ax.set_xlabel("Cumulative explained variance ratio $R_k$")
+        ax.set_ylabel("Test accuracy")
+        ax.grid(alpha=0.3)
+
+    high = df[df["cum_var"] >= zoom_from]
+    draw(ax_full, df[df["cum_var"] < zoom_from], alternate=False)
+    ax_full.axvspan(zoom_from, 1.0, color="#dd8452", alpha=0.12, lw=0)
+    ax_full.set_title("Explained variance vs. test accuracy")
+
+    draw(ax_zoom, high, alternate=True)
+    pad = (high["test_acc"].max() - high["test_acc"].min()) * 0.25 + 1e-3
+    ax_zoom.set_xlim(zoom_from, 1.02)
+    ax_zoom.set_ylim(high["test_acc"].min() - pad, high["test_acc"].max() + pad)
+    ax_zoom.set_title(f"Zoom: $R_k \\geq$ {zoom_from:.2f}")
     return _save(fig, "fig4_variance_vs_accuracy.png")
 
 
