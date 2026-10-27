@@ -9,8 +9,9 @@ def load_mnist():
     """(X_train, X_test, y_train, y_test)를 반환한다.
 
     픽셀값은 255.0으로 나누어 [0, 1]로 정규화하며 StandardScaler는 사용하지 않는다.
+    ARFF 파서는 pandas 버전에 따라 깨지는 pandas 파서 대신 liac-arff로 고정한다.
     """
-    X, y = fetch_openml("mnist_784", version=1, as_frame=False, parser="auto", return_X_y=True,
+    X, y = fetch_openml("mnist_784", version=1, as_frame=False, parser="liac-arff", return_X_y=True,
                         data_home=config.DATA_HOME)
     X = X.astype(np.float64) / 255.0
     y = y.astype(int)
