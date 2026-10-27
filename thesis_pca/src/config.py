@@ -22,5 +22,6 @@ N_SCATTER_SAMPLES = 5_000
 
 # 경로
 ROOT_DIR = Path(__file__).resolve().parent.parent
+DATA_HOME = ROOT_DIR / "data"  # fetch_openml 캐시 (있으면 오프라인으로 로드)
 RESULTS_DIR = ROOT_DIR / "results"
 FIGURES_DIR = ROOT_DIR / "figures"

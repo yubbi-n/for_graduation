@@ -5,7 +5,7 @@
 pip install -r requirements.txt
 python main.py
 ```
-- 최초 실행 시 `fetch_openml("mnist_784")`로 MNIST를 내려받습니다 (openml.org 접속 필요, 이후 `~/scikit_learn_data`에 캐시).
+- 최초 실행 시 `fetch_openml("mnist_784")`로 MNIST를 내려받습니다 (openml.org 접속 필요, 이후 `data/`에 캐시되어 오프라인으로 재실행 가능).
 - 실행이 끝나면 `results/`(CSV 3개)와 `figures/`(PNG 5개)가 생성되고 `pca_results` 표가 콘솔에 출력됩니다.
 
 ## 구성

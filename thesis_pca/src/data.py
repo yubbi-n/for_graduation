@@ -10,7 +10,8 @@ def load_mnist():
 
     픽셀값은 255.0으로 나누어 [0, 1]로 정규화하며 StandardScaler는 사용하지 않는다.
     """
-    X, y = fetch_openml("mnist_784", version=1, as_frame=False, parser="auto", return_X_y=True)
+    X, y = fetch_openml("mnist_784", version=1, as_frame=False, parser="auto", return_X_y=True,
+                        data_home=config.DATA_HOME)
     X = X.astype(np.float64) / 255.0
     y = y.astype(int)
 
