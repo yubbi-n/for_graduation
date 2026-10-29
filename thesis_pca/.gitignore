@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+# fetch_openml 캐시 (재실행 시 자동으로 다시 받음)
+data/
